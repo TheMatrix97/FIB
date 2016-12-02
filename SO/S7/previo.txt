@@ -1,0 +1,46 @@
+1.
+La llamada devuelve un 0 al pulsar ctrl+D
+2.
+./es1 < test.txt
+3.
+salida:
+-rwxrwxr-x 1 matrixuni matrixuni 7459 Nov 15 08:39 es1
+-rw-r--r-- 1 matrixuni matrixuni 1090 Nov 15 08:39 es1.c
+-rwxrwxr-x 1 matrixuni matrixuni 7605 Nov 15 08:30 es2
+-rw-r--r-- 1 matrixuni matrixuni 1418 Apr 19  2013 es2.c
+-rwxrwxr-x 1 matrixuni matrixuni 7460 Nov 15 08:30 es3
+-rw-r--r-- 1 matrixuni matrixuni  880 Nov 13  2013 es3.c
+-rwxrwxr-x 1 matrixuni matrixuni 7383 Nov 15 08:30 es4
+-rw-r--r-- 1 matrixuni matrixuni 1089 Apr 19  2013 es4.c
+-rwxrwxr-x 1 matrixuni matrixuni 7262 Nov 15 08:30 es5
+-rw-r--r-- 1 matrixuni matrixuni   22 Jan 27  2012 es5.c
+-rwxrwxr-x 1 matrixuni matrixuni 7335 Nov 15 08:30 es6
+-rw-r--r-- 1 matrixuni matrixuni   99 Jan 27  2012 es6.c
+-rwxrwxr-x 1 matrixuni matrixuni 7299 Nov 15 08:30 es7
+-rw-r--r-- 1 matrixuni matrixuni   93 Jan 30  2012 es7.c
+-rwxrwxr-x 1 matrixuni matrixuni 7424 Nov 15 08:30 es8
+-rw-r--r-- 1 matrixuni matrixuni  552 Jan 30  2012 es8.c
+-rw-rw-r-- 1 matrixuni matrixuni    5 Nov 15 08:42 test.txt
+-rw-rw-r-- 1 matrixuni matrixuni    2 Nov 15 08:41 test.txt~
+imprime todas las lineas del ls -l que contienen un 'es'
+el comando grep busca patrones en el fichero de input, y si lo encuentra imprime la línea
+
+3.
+ps -e -o pid,user,command | grep root --> donde root puede cualquier palabra a buscar
+
+5.
+Entero en representacion interna. Voy a escribir 4 bytes:
+B)
+Entero en formato string. Voy a escribir 5 bytes:
+10562
+En el primer caso se escriben 4 bytes y en el segundo 5. En el primer caso el shell trata el entero como si fuera una cadena de chars y imprime el ascii correspondiente al entero impreso, el segundo en cambio imprime los el numero como una cadena de 5 caracteres
+
+6a)
+mydriver1: read_driver_1
+mydriver2: read_driver_2
+
+6b)
+el major y el minor són identificadores del dispositivo fisico que usa el kernel, sirven para poder seleccionar el dispositivo fisico que queremos usar
+EL driver1 usa: major=249 // minor=0
+El driver2 usa: major=250 // minor=0
+

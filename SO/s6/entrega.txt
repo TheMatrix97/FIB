@@ -1,0 +1,38 @@
+Sesión 6: Análisis de rendimiento
+PREGUNTA 43. Apunta en el fichero entrega.txt el número de unidades de cálculo (cores o CPUS) que tienes en la máquina. 
+El pc tiene 4 cores
+
+PREGUNTA 44. Apunta el tiempo medio, máximo y mínimo para una instancia en la Tabla 1 de la hoja de cálculo adjunta.
+
+
+PREGUNTA 45. Anota para cada experimento los tiempos medio, máximo y mínimo en la Tabla 1 de la hoja de cálculo adjunta.
+
+PREGUNTA 46. ¿Cómo se ve afectado el tiempo de ejecución del proceso?
+Al ejecutar el comando ./FIB 1 desde alumne el tiempo de ejecucion aumenta hasta aproximadamente un tiempo maximo de 17,58, que es bastante mas grande que el maximo alcanzado en la prueba anterior donde solamente ejecutabamos fib 1 desde un usuario
+
+PREGUNTA 47. ¿Qué %CPU ha asignado el sistema a cada proceso?
+Aproximadamente se le ha asignado la misma cpu a todos los procesos, entre 79% y el 89%
+
+PREGUNTA 48. La asignación, ¿ha sido por proceso o por usuario? ¿Crees que es posible que 1 usuario sature el sistema con este criterio?
+La asignación de cpu es por proceso ya que todos han recibido la misma cpu, por lo que es posible crear un proceso que requiera mucha cpu y que sature el sistema
+
+PREGUNTA 49. ¿Cómo se ve afectado el tiempo de ejecución de FIB respecto al número de instancias de BAJA_PRIO_FIB?
+Cuantas mas instancias se hagan major es la diferencia de tiempo entre el proceso FIB y el fib con prioridad baja, por lo que el BAJA_PRIO_FIB cada vez tarda mas en ejecutarse.
+ 
+PREGUNTA 50. ¿Qué %CPU ha asignado el sistema a cada proceso con 2 y 5 instancias de BAJA_PRIO_FIB?
+con 5 instancias:
+BAJA_PRIO = 32 %
+FIB = 80 %
+Con 2 instancias:
+Baja_prio= 80% 
+FIB = 99%
+
+PREGUNTA 51. ¿Cuánta memoria física tiene el sistema (F) en bytes?
+el sistema tiene 
+mem: 8174988 bytes
+swap: 2097148 bytes
+total de memoria fisica: 8174988 bytes
+ejecucion1 : swap in = 0, swap out = 0
+
+PREGUNTA 52. Rellena la siguiente tabla y añádela al fichero RendimientoProcesos.ods. ¿En la Ejecución 2 por qué crees que cambia el tiempo de acceso según el número de iteración? 
+PREGUNTA 53. Rellena la siguiente tabla y añádela al fichero RendimientoProcesos.ods (suma los fallos de página de todos los procesos de una misma ejecución)

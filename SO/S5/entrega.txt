@@ -1,0 +1,83 @@
+Sesión 5: Gestión de Memoria
+PREGUNTA 35. ¿Qué variables aparecen en la salida del nm de mem1_dynamic? ¿Qué dirección ocupa cada una? Indica a que región pertenece cada variable según la salida del nm y el tipo de variable 
+(local o global).
+nm mem1_dynamic:
+0804a060 B globalArray  ---> variable global al .bss
+
+
+PREGUNTA 36. Para los dos ejecutables, compilado estático y dinámico, observa su tamaño, la salida de los comandos nm y objdump ¿En qué se diferencian los dos ejecutables?
+El compilado estático ocupa 732828 bytes y el dinamico 7556 bytes, por lo que al hacer el nm del estático ademas de ver el contenido de antes, añadimos todo los datos/varibles de la libreria que usa, en cambio en el compilado dinamico, el numero de variables y contenido del programa
+
+
+PREGUNTA 37. Observa el contenido del fichero maps del /proc para cada proceso y apunta para cada región la dirección inicial, dirección final y etiqueta asociada. ¿Qué diferencia hay entre el maps de cada proceso?
+static:
+08048000-080ea000 r-xp 00000000 08:02 1404030    /home/alumne/s5/mem1_static
+080ea000-080ec000 rw-p 000a1000 08:02 1404030    /home/alumne/s5/mem1_static
+080ec000-080ef000 rw-p 00000000 00:00 0 
+093f7000-09419000 rw-p 00000000 00:00 0          [heap]
+b7736000-b7738000 r--p 00000000 00:00 0          [vvar]
+b7738000-b7739000 r-xp 00000000 00:00 0          [vdso]
+bff45000-bff66000 rw-p 00000000 00:00 0          [stack]
+
+dynamic:
+08048000-08049000 r-xp 00000000 08:02 1404028    /home/alumne/s5/mem1_dynamic
+08049000-0804a000 r--p 00000000 08:02 1404028    /home/alumne/s5/mem1_dynamic
+0804a000-0804b000 rw-p 00001000 08:02 1404028    /home/alumne/s5/mem1_dynamic
+0804b000-0804c000 rw-p 00000000 00:00 0 
+08511000-08533000 rw-p 00000000 00:00 0          [heap]
+b75ea000-b7799000 r-xp 00000000 08:02 34805      /lib/i386-linux-gnu/libc-2.23.so
+b7799000-b779a000 ---p 001af000 08:02 34805      /lib/i386-linux-gnu/libc-2.23.so
+b779a000-b779c000 r--p 001af000 08:02 34805      /lib/i386-linux-gnu/libc-2.23.so
+b779c000-b779d000 rw-p 001b1000 08:02 34805      /lib/i386-linux-gnu/libc-2.23.so
+b779d000-b77a0000 rw-p 00000000 00:00 0 
+b77b5000-b77b7000 rw-p 00000000 00:00 0 
+b77b7000-b77b9000 r--p 00000000 00:00 0          [vvar]
+b77b9000-b77ba000 r-xp 00000000 00:00 0          [vdso]
+b77ba000-b77dc000 r-xp 00000000 08:02 34780      /lib/i386-linux-gnu/ld-2.23.so
+b77dc000-b77dd000 rw-p 00000000 00:00 0 
+b77dd000-b77de000 r--p 00022000 08:02 34780      /lib/i386-linux-gnu/ld-2.23.so
+b77de000-b77df000 rw-p 00023000 08:02 34780      /lib/i386-linux-gnu/ld-2.23.so
+bf9a9000-bf9ca000 rw-p 00000000 00:00 0          [stack]
+
+el dynamic tiene muchas mas regiones de memoria, ya que tiene que referenciar las librerias, en cambio el static tiene menos regiones de memoria, pero este ocupa mas ya que incluye toda la libreria.
+
+PREGUNTA 38. ¿A qué región de las descritas en el maps pertenece cada variable y cada zona reservada con malloc? Apunta la dirección inicial, dirección final y el nombre de la región.
+Se guarda en la región del heap(memoria dinamica) 
+static: 093f7000-09419000 rw-p 00000000 00:00 0          [heap]
+dynamic: 08511000-08533000 rw-p 00000000 00:00 0          [heap]
+
+PREGUNTA 39. Para cada ejecución apunta el número de mallocs hechos y la dirección inicial y final del heap que muestra el fichero maps del /proc. ¿Cambia el tamaño según el parámetro de entrada? ¿Por qué?
+ejecucion 3:
+
+08e88000-08eaa000 rw-p 00000000 00:00 0          [heap]
+3 mallocs
+
+
+ejecucion 5
+
+09983000-099a5000 rw-p 00000000 00:00 0          [heap]
+5 mallocs
+
+ejecucion 100
+
+0976b000-097f0000 rw-p 00000000 00:00 0          [heap]
+100 mallocs
+
+PREGUNTA 40. ¿Cuál es el tamaño del heap en este caso? Explica los resultados.
+tamaño heap: 0843e000-0845f000 rw-p 00000000 00:00 0          [heap]
+Ocupa mucho menos, ya que en cada iteracion el espacio que usa lo libera
+
+PREGUNTA 41. Para cada ejecución apunta el número de mallocs hechos y la dirección inicial y final del heap que se muestra en el maps del /proc. ¿Cambia el tamaño del heap respecto al observado en la pregunta anterior? ¿Por qué?
+ejecucion 3:
+091a3000-091a6000 rw-p 00000000 00:00 0          [heap]
+ejecucion 5:
+090e3000-090e8000 rw-p 00000000 00:00 0          [heap]
+ejecucion 100:
+09658000-096bc000 rw-p 00000000 00:00 0          [heap]
+Si,porque el sbrk solo aumenta el tamaño del heap x bytes, em cambio el malloc te da mas memoria, y la gestiona a su manera. El sbrk reserva menos espacio que el malloc
+
+
+PREGUNTA 42. ¿Qué error contiene el código del programa? ¿Por qué el programa no falla en las primeras iteraciones? Propón una alternativa a este código que evite que se genere la excepción, detectando, antes de que pase, que vamos a hacer un acceso fuera del espacio de direcciones.
+
+
+
