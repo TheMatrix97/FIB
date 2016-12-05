@@ -1,0 +1,125 @@
+¿Cómo podéis saber los sistemas de ficheros montados en vuestro sistema y de 
+qué tipo son? Indica, además, en qué directorios están montados.
+Lo podemos saber gracias al comando df -T -h -l
+en la columna type podemos ver el tipo de sistema de fichero y en la columna mounted on dónde estan montados
+Filesystem     Type      Size  Used Avail Use% Mounted on
+udev           devtmpfs  997M  4.0K  997M   1% /dev
+tmpfs          tmpfs     202M  1.5M  200M   1% /run
+/dev/sda1      ext4       19G  3.6G   15G  21% /
+none           tmpfs     4.0K     0  4.0K   0% /sys/fs/cgroup
+none           tmpfs     5.0M     0  5.0M   0% /run/lock
+none           tmpfs    1007M  156K 1007M   1% /run/shm
+none           tmpfs     100M   56K  100M   1% /run/user
+
+
+¿Cómo se puede saber el número de inodos libres de un sistema de ficheros?¿Qué comando has utilizado y con qué opciones?
+Se puede hacer con el comando df -T -i -H
+Filesystem     Type     Inodes IUsed IFree IUse% Mounted on
+udev           devtmpfs   215k   474  214k    1% /dev
+tmpfs          tmpfs      220k   570  220k    1% /run
+/dev/sda1      ext4       1.3M  189k  1.1M   16% /
+none           tmpfs      220k     2  220k    1% /sys/fs/cgroup
+none           tmpfs      220k     3  220k    1% /run/lock
+none           tmpfs      220k     7  220k    1% /run/shm
+none           tmpfs      220k    32  220k    1% /run/user
+donde la columna Ifree indica el numero de inodos libres
+
+¿Cómo  se  puede  saber  el  espacio  libre  de  un  sistema  de  ficheros?  ¿Qué comando has utilizado y con qué opciones?
+df -T -h -l
+Filesystem     Type      Size  Used Avail Use% Mounted on
+udev           devtmpfs  997M  4.0K  997M   1% /dev
+tmpfs          tmpfs     202M  1.5M  200M   1% /run
+/dev/sda1      ext4       19G  3.6G   15G  21% /
+none           tmpfs     4.0K     0  4.0K   0% /sys/fs/cgroup
+none           tmpfs     5.0M     0  5.0M   0% /run/lock
+none           tmpfs    1007M  156K 1007M   1% /run/shm
+none           tmpfs     100M   64K  100M   1% /run/user
+la columna Use indica el porcentage de espacio usado y Avail el espacio libre del sistema
+
+De  qué  tipo es cada uno de  links  creados, sl_pr y hl_pr?  Ejecuta el comando stat  sobre pr.txt,  sobre  sl_pr  y  sobre  hl_pr. Busca  en  la  salida  de  stat  la información sobre el inodo, el tipo de fichero y el número de links y anótala en el fichero previo.txt. ¿Cuál es el número de links que tiene cada fichero? ¿Qué significa ese valor? ¿Qué inodo tiene cada fichero? ¿Alguno de los links, sl_pr o hl_pr, tiene el mismo inodo que pr.txt? ¿Si es así, qué significa eso?
+ 
+sl_pr es un softlink y hl_pr es un hardlink.
+stat sobre pr.txt
+  File: ‘pr.txt’
+  Size: 19        	Blocks: 8          IO Block: 4096   regular file
+Device: 801h/2049d	Inode: 2269        Links: 2
+Access: (0664/-rw-rw-r--)  Uid: ( 1000/matrixuni)   Gid: ( 1000/matrixuni)
+Access: 2016-12-05 06:44:56.865880861 -0800
+Modify: 2016-12-05 06:44:04.321880901 -0800
+Change: 2016-12-05 06:44:23.553880887 -0800
+ Birth: -
+stat sobre sl_pr:
+  File: ‘sl_pr’ -> ‘pr.txt’
+  Size: 6         	Blocks: 0          IO Block: 4096   symbolic link
+Device: 801h/2049d	Inode: 2271        Links: 1
+Access: (0777/lrwxrwxrwx)  Uid: ( 1000/matrixuni)   Gid: ( 1000/matrixuni)
+Access: 2016-12-05 06:44:17.349880891 -0800
+Modify: 2016-12-05 06:44:16.333880892 -0800
+Change: 2016-12-05 06:44:16.333880892 -0800
+ Birth: -
+stat sobre hl_pr:
+  File: ‘hl_pr’
+  Size: 19        	Blocks: 8          IO Block: 4096   regular file
+Device: 801h/2049d	Inode: 2269        Links: 2
+Access: (0664/-rw-rw-r--)  Uid: ( 1000/matrixuni)   Gid: ( 1000/matrixuni)
+Access: 2016-12-05 06:44:56.865880861 -0800
+Modify: 2016-12-05 06:44:04.321880901 -0800
+Change: 2016-12-05 06:44:23.553880887 -0800
+ Birth: -
+
+numero de links:
+pr.txt = 2 //hay 2 archivos que apuntan al mismo inodo
+sl_pr = 1 //sl_pr solo apunta a un inodo totalmente diferente al de pr.txt
+hl_pr = 2 //hl_pr apunta al inodo de pr.txt por lo que todos los stats son iguales
+
+pr.txt y sl_pr usan el mismo inodo. sl_pr usa un inodo propio que contiene el path absoluto a pr.txt. Esto es porque los softlink solo contienen el path al archivo que apuntan, a diferencia de los hl que apuntan directamente al nodo del archivo.
+
+Ejecuta los comandos cat, namei y readlink sobre sl_pr y sobre hl_pr:
+sl_pr:
+	cat=
+	esto es una prueba
+	namei=
+	f: sl_pr
+	 l sl_pr -> pr.txt
+	   - pr.txt
+	readlink=
+	pr.txt
+hl_pr:
+	cat=
+	esto es una prueba
+	namei=
+	f: hl_pr
+ 	- hl_pr
+	readlink=
+
+Si, hay diferencias con el namei y el readlink: sl_pr al usar namei indica el camino que recorre para ejecutar pr.txt mediante el link. en cambio hl_pr simplemente ejecuta hl_pr. Readlink con sl_pr devuelve el archivo al que apunta, con hl_pr no devuelve nada porque no contiene ningun path absoluto a un archivo y el archivo no es de tipo link
+Eliminamos pr.txt:
+sl_pr:
+	cat=
+	no such file or directory
+	namei=
+	f: sl_pr
+	 l sl_pr -> pr.txt
+	pr.txt - No such file or directory
+	readlink=
+	pr.txt
+hl_pr:
+	cat=
+	esto es una prueba
+	namei=
+	f: hl_pr
+ 	- hl_pr
+	readlink=
+
+La ejecucion sobre hl_pr no cambia ya que al eliminar pr.txt no se elimina el inodo al que apunta hl_pr que el mismo al que apuntaba hl_pr. el problema esta con el Sl, ya que al eliminar pr.txt el link se invalida, y no puede acceder al inodo al que apuntaba pr.txt, porque pr.txt se ha eliminado y la referencia ya no existe.
+
+
+	
+		
+
+
+
+
+
+
+
