@@ -1,0 +1,103 @@
+Sesión 9: Sistema de Ficheros
+PREGUNTA 69. Contesta a las siguientes preguntas en el fichero “entrega.txt”
+•	¿Cual/es de los comandos anteriores han dado error al intentar ejecutarlos? Explica porqué.
+ln $HOME/A $HOME/A/H
+ln: /home/alumne/A: hard link not allowed for directory
+porque no se puede hacer un hard link de un directorio, tendria que ser softlink
+
+•	Explica el resultado de ejecutar el comando “stat” utilizando como parámetro cada uno de los nombres simbólicos que has creado anteriormente.
+  File: 'D'
+  Size: 25        	Blocks: 8          IO Block: 4096   regular file
+Device: 805h/2053d	Inode: 745689      Links: 2
+Access: (0664/-rw-rw-r--)  Uid: ( 1001/  alumne)   Gid: ( 1001/  alumne)
+Access: 2016-12-09 14:23:52.968893761 +0100
+Modify: 2016-12-09 14:23:52.968893761 +0100
+Change: 2016-12-09 14:25:05.480230310 +0100
+ Birth: -
+Es el archivo creado al principio, contiene texto
+
+  File: 'E' -> '/home/alumne/A'
+  Size: 14        	Blocks: 0          IO Block: 4096   symbolic link
+Device: 805h/2053d	Inode: 745696      Links: 1
+Access: (0777/lrwxrwxrwx)  Uid: ( 1001/  alumne)   Gid: ( 1001/  alumne)
+Access: 2016-12-09 14:25:07.928208628 +0100
+Modify: 2016-12-09 14:24:12.472710978 +0100
+Change: 2016-12-09 14:24:12.472710978 +0100
+ Birth: -
+es un softlink que apunta al directorio /home/alumne/A
+
+  File: 'F' -> 'D'
+  Size: 1         	Blocks: 0          IO Block: 4096   symbolic link
+Device: 805h/2053d	Inode: 745697      Links: 1
+Access: (0777/lrwxrwxrwx)  Uid: ( 1001/  alumne)   Gid: ( 1001/  alumne)
+Access: 2016-12-09 14:25:07.928208628 +0100
+Modify: 2016-12-09 14:24:27.080576266 +0100
+Change: 2016-12-09 14:24:27.080576266 +0100
+ Birth: -
+es un softlink que apunta al fichero de texto 'D'
+
+  File: 'G'
+  Size: 25        	Blocks: 8          IO Block: 4096   regular file
+Device: 805h/2053d	Inode: 745689      Links: 2
+Access: (0664/-rw-rw-r--)  Uid: ( 1001/  alumne)   Gid: ( 1001/  alumne)
+Access: 2016-12-09 14:23:52.968893761 +0100
+Modify: 2016-12-09 14:23:52.968893761 +0100
+Change: 2016-12-09 14:25:05.480230310 +0100
+ Birth: -
+Es un hardlink que apunta al fichero de texto 'D'
+
+
+•	¿Cuál sería el contenido de los ficheros D, E, F y G? Comenta las diferencias que observas al utilizar los comandos “more” o “cat” para ver el contenido del fichero y el resultado de utilizar el comando “readlink”.
+cat i more
+D: estoy en el directorio A
+E: is a directory
+F: estoy en el directorio A
+G: estoy en el direcdtorio A
+readlink:
+D: nada(no es un link)
+E: /home/alumne/A
+F: D
+G: nada(no es un softlink)
+
+
+•	Escribe en papel los accesos que se realizan cuando se accede a los ficheros: “$HOME/A/F”, “$HOME/A/E” y “$HOME/A/G”. Ahora compáralos con el resultado que obtienes cuando ejecutas el comando “namei” con cada uno de los ficheros anteriores. ¿Si ejecutas “readlink $HOME/A/F” se realizan los mismos accesos? ¿Cómo influye el hecho de que en unos casos sea una ruta absoluta a un fichero y en otros una ruta relativa?
+namei $HOME/A/F
+f: /home/alumne/A/F
+ d /
+ d home
+ d alumne
+ d A
+ l F -> D
+   - D
+
+namei $HOME/A/E
+f: /home/alumne/A/E
+ d /
+ d home
+ d alumne
+ d A
+ l E -> /home/alumne/A
+   d /
+   d home
+   d alumne
+   d A
+
+namei $HOME/A/E
+f: /home/alumne/A/G
+ d /
+ d home
+ d alumne
+ d A
+ - G
+Al hacer readlink simplemente lee donde apunta F. Los accessos con rutas absolutas provocan que se tenga que hacer un acceso mas largo pasando por el nodo principal del arbol del sistema de ficheros, en cambio al hacer una ruta relativa hace el acceso mucho mas directo,y simplemente accede a D, cuando con una ruta absoluta deberia acceder a home, alumne,A i finalmente D
+
+
+•	Crea un soft link de un fichero a si mismo (un fichero que no exista previamente). Comenta el resultado de mirar su contenido utilizando el comando “cat”. Observa como controla el sistema la existencia de ciclos en el sistema de ficheros. Ejecuta el comando “namei” y comenta su resultado.
+Al hacer namei se crea un bucle por lo que al hacer cat nos avisa que se ha excedido el limite de accesos a links simbolicos, por eso el link aparece en rojo en el terminal al hacer ls -l 
+
+PREGUNTA 70. Entrega el fichero append.c.
+PREGUNTA 71. Entrega el fichero invirtiendo_fichero.c.
+PREGUNTA 72. Entrega el fichero insertarx2.c.
+
+
+
