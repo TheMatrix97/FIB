@@ -12,11 +12,11 @@ int main(int arcg, char *argv[]){
 	debug("tamany : %i",tamany);
 	int i;
 	char aux;
-	for(i = 0; i < tamany - 1; i++){
+	for(i = 0; i < tamany; i++){
 		lseek(fd,i,SEEK_SET);
 		read(fd,&aux,sizeof(char));
 		debug("he leido %c",aux);
-		lseek(fd,-1,SEEK_END);
+		lseek(fd,0,SEEK_END);
 		write(fd,&aux,sizeof(char));
 	
 	}
