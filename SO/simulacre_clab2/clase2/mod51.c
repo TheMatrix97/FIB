@@ -18,5 +18,5 @@ void main(int argc, char* argv[]){
 		val = random % 51;
 		if((write(1,&val,sizeof(val))) < 0) panic("write");
 	}
-		
+	exit(1);	
 }

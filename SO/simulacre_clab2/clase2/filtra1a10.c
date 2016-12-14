@@ -9,27 +9,32 @@
 
 void usage(){
 }
-void inicializar(int fd){
-	int i;
-	int d = 0;
-	for(i = 0; i <= 9; i++){
-		write(fd,&d,sizeof(int));
-	}
-}
+
 	
 void main(int argc, char* argv[]){
 	int fd = open("freq1a10.int",O_CREAT|O_TRUNC|O_RDWR,0660);
+//	debug("file desc = %i",fd);
 	char input;
-	inicializar(fd);
+	
+	int a = 0;
+	int i;
+	int d = 0;
+	int pos;
+	for(i = 0; i <= 9; i++) write(fd,&d,sizeof(int));
 	while((read(0,&input,sizeof(char))) > 0){ //llegim fins final d'entrada
 		if(input >= '0' && input <= '9'){
-			int pos = input - '0';
-			lseek(fd,pos,SEEK_SET);
-			int a;
+			pos = input - '0';
+	//		debug("pos = %i",pos);
+			lseek(fd,pos*sizeof(int),SEEK_SET);
 			read(fd,&a,sizeof(int));
+		//	debug("he leido %i",a);
 			a++;
-			lseek(fd,pos,SEEK_SET);
+		//	debug("voy a escribir %i en %i",a,pos);
+			lseek(fd,pos*sizeof(int),SEEK_SET);
 			write(fd,&a,sizeof(int));
+		//	debug("he escrito %i",a);
+			
 		}
-	}	
+	}
+	exit(0);
 }
