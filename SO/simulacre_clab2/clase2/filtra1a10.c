@@ -13,28 +13,22 @@ void usage(){
 	
 void main(int argc, char* argv[]){
 	int fd = open("freq1a10.int",O_CREAT|O_TRUNC|O_RDWR,0660);
-//	debug("file desc = %i",fd);
-	char input;
-	
+	int input;
 	int a = 0;
 	int i;
-	int d = 0;
+	int zero = 0;
 	int pos;
-	for(i = 0; i <= 9; i++) write(fd,&d,sizeof(int));
-	while((read(0,&input,sizeof(char))) > 0){ //llegim fins final d'entrada
-		if(input >= '0' && input <= '9'){
-			pos = input - '0';
-	//		debug("pos = %i",pos);
-			lseek(fd,pos*sizeof(int),SEEK_SET);
-			read(fd,&a,sizeof(int));
-		//	debug("he leido %i",a);
+	int r;
+	for(i = 0; i <= 9; i++) write(fd,&zero,sizeof(zero)); //inicialitzem el fitxer
+	while((r=read(0,&input,sizeof(input))) > 0){ //llegim fins final d'entrada
+		if(r!=sizeof(input)) panic("partial read");
+		if(input >= 0 && input <= 9){
+			if(lseek(fd,input*sizeof(int),SEEK_SET) < 0) panic("lseek 1");
+			if(read(fd,&a,sizeof(int)) < 0) panic("read");
 			a++;
-		//	debug("voy a escribir %i en %i",a,pos);
-			lseek(fd,pos*sizeof(int),SEEK_SET);
-			write(fd,&a,sizeof(int));
-		//	debug("he escrito %i",a);
+			if(lseek(fd,input*sizeof(int),SEEK_SET) < 0) panic("lseek 2");
+			if(write(fd,&a,sizeof(int)) < 0) panic("write");
 			
 		}
 	}
-	exit(0);
 }

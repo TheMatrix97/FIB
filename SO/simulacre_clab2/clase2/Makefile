@@ -6,5 +6,4 @@ filtra1a10: filtra1a10.c dbg.h
 maxmin: maxmin.c dbg.h
 	gcc -o maxmin maxmin.c
 clean:
-	rm *.o
 	rm mod51 filtra1a10 maxmin
