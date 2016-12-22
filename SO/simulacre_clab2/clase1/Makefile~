@@ -7,4 +7,5 @@ Mesenne: Mesenne.c dbg.h
 primemap: primemap.c dbg.h
 	gcc -o primemap primemap.c
 clean:
+	rm *.o
 	rm arith Mesenne primemap
